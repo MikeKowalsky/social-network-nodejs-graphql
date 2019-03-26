@@ -4,6 +4,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
+const graphqlHttp = require("express-graphql");
+
+const graphqlSchema = require("./graphql/schema");
+const graphqlResolver = require("./graphql/resolvers");
 
 const keys = require("./utils/keys");
 
@@ -46,17 +50,19 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(
+  "/graphql",
+  graphqlHttp({
+    schema: graphqlSchema,
+    rootValue: graphqlResolver
+  })
+);
+
 // general error handling middleware
 app.use((err, req, res, next) => {
   console.log(err);
-
-  //
-  // destructurization
-  //
-
-  const status = err.statusCode || 500;
-  const message = err.message;
-  const data = err.data;
+  const { statusCode, message, data } = err;
+  const status = statusCode || 500;
   res.status(status).json({ message, data });
 });
 
