@@ -13,7 +13,7 @@ const keys = require("./utils/keys");
 
 const MONGODB_URI = `mongodb+srv://${keys.MONGO_USER}:${
   keys.MONGO_PASSWORD
-}@cluster0-idsge.mongodb.net/social-node-graphQLgs?retryWrites=true`;
+}@cluster0-idsge.mongodb.net/social-node-graphQL?retryWrites=true`;
 
 const app = express();
 
@@ -54,7 +54,8 @@ app.use(
   "/graphql",
   graphqlHttp({
     schema: graphqlSchema,
-    rootValue: graphqlResolver
+    rootValue: graphqlResolver,
+    graphiql: true
   })
 );
 
