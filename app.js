@@ -1,5 +1,4 @@
 const path = require("path");
-const fs = require("fs");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -12,6 +11,7 @@ const graphqlResolver = require("./graphql/resolvers");
 const auth = require("./middleware/auth");
 
 const keys = require("./utils/keys");
+const { clearImage } = require("./utils/file");
 
 const MONGODB_URI = `mongodb+srv://${keys.MONGO_USER}:${
   keys.MONGO_PASSWORD
@@ -101,8 +101,3 @@ mongoose
     console.log(err);
     throw err;
   });
-
-const clearImage = filePath => {
-  filePath = path.join(__dirname, "..", filePath);
-  fs.unlink(filePath, err => console.log(err));
-};
